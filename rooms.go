@@ -77,17 +77,17 @@ func findChildren(roomToAdd *room, rmToAddName string, startRmName, endRmName st
 	// childrenRm := []*room{}
 	for c := 0; c < len(beginConnRmNames); c++ {
 		beginRmName := beginConnRmNames[c]
-		if startRmName == destConnRmNames[c] {
+		if startRmName == destConnRmNames[c] { // case where the startRmName is at the end of the conn
 			beginConnRmNames[c], destConnRmNames[c] = destConnRmNames[c], beginConnRmNames[c]
 		}
-		if rmToAddName != startRmName {
+		if rmToAddName != startRmName { // not adding startRm
 			for m := 0; m < len(firstRm.children); m++ {
 				if firstRm.children[m].name == destConnRmNames[c] && startRmName != beginConnRmNames[c] {
 					beginConnRmNames[c], destConnRmNames[c] = destConnRmNames[c], beginConnRmNames[c]
 				}
 			}
 		}
-		if beginRmName == rmToAddName {
+		if beginRmName == rmToAddName { // adding the rm except the start and end rm name
 			// fmt.Println("dsf", childrenRm)
 			destRmName := destConnRmNames[c]
 			// fmt.Printf("Adding new child room (%s) from the %dth connection to %s\n", destRmName, c, rmToAddName)
@@ -117,6 +117,8 @@ func addRoom(root *room, rmToAddName string, startRmName, endRmName string, begi
 		test = nil
 		test = append(test, root)
 		// fmt.Println(rmToAddName)
+
+		// first encountered the end rm
 		if firstendrm == 0 {
 			lastRm = &room{
 				parent:   test,
@@ -124,7 +126,7 @@ func addRoom(root *room, rmToAddName string, startRmName, endRmName string, begi
 				children: nil,
 				occupied: false,
 			}
-			firstendrm = 1
+			firstendrm = 1 // set as encountered
 		} else {
 			parentnumber := len(lastRm.parent)
 			for t := 0; t < parentnumber; t++ {
@@ -147,6 +149,7 @@ func addRoom(root *room, rmToAddName string, startRmName, endRmName string, begi
 
 		countofparents := len(lastRm.parent)
 		if !endroomparent {
+			// append the lastRm into one of the children of its parent
 			lastRm.parent[countofparents-1].children = append(lastRm.parent[countofparents-1].children, lastRm)
 		}
 
