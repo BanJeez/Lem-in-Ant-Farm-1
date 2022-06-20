@@ -28,8 +28,8 @@ func readnote(textfile string) []string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(string(content))
-	// fmt.Println("")
+	fmt.Println(string(content))
+	fmt.Println("")
 	slccontent = strings.Split(string(content), "\n")
 	for l := 0; l < len(slccontent); l++ {
 		for t := 0; t < len(slccontent[l]); t++ {
